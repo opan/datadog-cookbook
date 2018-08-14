@@ -6,6 +6,7 @@
 api_key = node[cookbook_name]['datadog_api_key']
 user = node[cookbook_name]['user']
 group = node[cookbook_name]['group']
+hostname = node[cookbook_name]['datadog_hostname']
 datadog_config_path = node[cookbook_name]['datadog_config_path']
 
 execute 'Install Datadog agent' do
@@ -18,7 +19,8 @@ template "#{datadog_config_path}/datadog.yaml" do
   source 'datadog.yaml.erb'
   owner 'dd-agent'
   group 'dd-agent'
-  model '640'
+  mode '0640'
+  variables api_key: api_key, hostname: hostname
 end
 
 execute 'Start Datadog agent' do
